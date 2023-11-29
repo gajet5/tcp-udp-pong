@@ -1,10 +1,6 @@
 // // TCP
 // const http = require('http');
 //
-// const postData = JSON.stringify({
-//   'msg': 'Hello World!',
-// });
-//
 // const options = {
 //   host: 'localhost',
 //   method: 'POST',
@@ -12,7 +8,7 @@
 //   port: '3000',
 //   headers: {
 //     'Content-Type': 'application/json',
-//     'Content-Length': Buffer.byteLength(postData),
+//     'Content-Length': new Buffer.alloc(1000);
 //   }
 // };
 // const request = http.request(options, (response) => {
