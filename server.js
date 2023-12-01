@@ -5,11 +5,11 @@ if (OPTIONS.TCP_USE) {
 
   const serverTCP = http.createServer();
 
-  serverTCP.on('connection', function () {
+  serverTCP.on('connection', () => {
     console.log(`TCP получено`);
   })
 
-  serverTCP.listen(OPTIONS.TCP_PORT, function () {
+  serverTCP.listen(OPTIONS.TCP_PORT, () => {
     console.log(`Server TCP on: http://${OPTIONS.SERVER_IP}:${OPTIONS.TCP_PORT}`);
   });
 }
@@ -18,7 +18,7 @@ if (OPTIONS.UDP_USE) {
   const dgram = require('dgram');
   const serverUPD = dgram.createSocket('udp4');
 
-  serverUPD.on('message',  function () {
+  serverUPD.on('message',  () => {
     console.log('UDP получено');
   });
 
