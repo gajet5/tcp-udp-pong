@@ -1,27 +1,30 @@
-// // TCP
-// const http = require('http');
-//
-// const PORT = 3000;
-//
-// function handleRequest(request, response) {
-//   console.log(request.headers);
-//   response.end('It Works!! Path Hit: ' + request.url);
-// }
-//
-// const serverTCP = http.createServer(handleRequest);
-// serverTCP.listen(PORT, function () {
-//   console.log("Server listening on: http://localhost:%s", PORT);
-// });
+const OPTIONS = require('./options');
 
-// UDP
-const dgram = require('dgram');
-const server = dgram.createSocket('udp4');
+if (OPTIONS.TCP_USE) {
+  const http = require('http');
 
-const reply = new Buffer.from('pong');
+  const serverTCP = http.createServer();
 
-server.on('message', function (message, remote) {
-  console.log('Got', message.toString());
-  server.send(reply, 0, reply.length, remote.port, remote.address);
-});
+  serverTCP.on('connection', function () {
+    console.log(`TCP получено`);
+  })
 
-server.bind(6790, '0.0.0.0');
+  serverTCP.listen(OPTIONS.TCP_PORT, function () {
+    console.log(`Server TCP on: http://${OPTIONS.SERVER_IP}:${OPTIONS.TCP_PORT}`);
+  });
+}
+
+if (OPTIONS.UDP_USE) {
+  const dgram = require('dgram');
+  const serverUPD = dgram.createSocket('udp4');
+
+  serverUPD.on('message',  function () {
+    console.log('UDP получено');
+  });
+
+  serverUPD.on('listening', () => {
+    console.log(`Server UDP on: http://${OPTIONS.SERVER_IP}:${OPTIONS.UDP_PORT}`);
+  })
+
+  serverUPD.bind(OPTIONS.UDP_PORT, OPTIONS.SERVER_IP);
+}
