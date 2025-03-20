@@ -33,9 +33,17 @@ if (OPTIONS.UDP_USE) {
   const reply = new Buffer.alloc(OPTIONS.UDP_BUFFER_SIZE);
   const client = dgram.createSocket('udp4');
 
-  for (let i = 0; i < OPTIONS.UDP_REQUEST_TIMES; i++) {
-    client.send(reply, 0, reply.length, OPTIONS.UDP_PORT, OPTIONS.SERVER_IP);
+  function send(client) {
+    for (let i = 0; i < OPTIONS.UDP_REQUEST_TIMES; i++) {
+      client.send(reply, 0, reply.length, OPTIONS.UDP_PORT, OPTIONS.SERVER_IP);
+    }
   }
+
+  if (OPTIONS.UDP_USE_BIND_INTERFACE_IP)
+    client.bind(OPTIONS.UDP_PORT, OPTIONS.UDP_INTERFACE_IP, () => send(client))
+  else
+    send(client)
+
 
   setTimeout(() => {
     client.close();

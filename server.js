@@ -18,8 +18,8 @@ if (OPTIONS.UDP_USE) {
   const dgram = require('dgram');
   const serverUPD = dgram.createSocket('udp4');
 
-  serverUPD.on('message',  () => {
-    console.log('UDP получено');
+  serverUPD.on('message',  (_msg, rinfo) => {
+    console.log(rinfo);
   });
 
   serverUPD.on('listening', () => {
